@@ -26,14 +26,14 @@ func main() {
 			"Registered at: " + message.AccountInfo.RegisteredAt + "\n")
 	}
 
-	// Create a new long link data
+	// Write down your link data
 	longUrlname := "https://www.google.ru"
 	customName := "goodsagle"
 	expirationDate := time.Now().Add(time.Hour * 24) // set to 1 day from now
 
 	UrlToShort := &urlbae.LongLinkData{longUrlname, customName, expirationDate}
 
-	// Shorten the url
+	// Shorten your url
 	urlbae.DoShortLink(client, UrlToShort)
 
 	// Get List of all active short links
