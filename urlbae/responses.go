@@ -2,11 +2,18 @@ package urlbae
 
 import "time"
 
-type ShortLinkResponse struct {
-	Error    int    `json:"error,omitempty"`
-	Id       string `json:"id,omitempty"`
-	ShortUrl string `json:"shorturl,omitempty"`
-	Message  string `json:"message,omitempty"`
+type LinkResponse struct {
+	Error       int    `json:"error,omitempty"`
+	Id          string `json:"id,omitempty"`
+	ShortUrl    string `json:"shorturl,omitempty"`
+	Message     string `json:"message,omitempty"`
+	AccountInfo struct {
+		AccountId    int    `json:"id,omitempty"`
+		Email        string `json:"email,omitempty"`
+		Username     string `json:"username,omitempty"`
+		Status       string `json:"status,omitempty"`
+		RegisteredAt string `json:"registered,omitempty"`
+	} `json:"data,omitempty"`
 }
 
 type LongLinkData struct {
@@ -32,3 +39,4 @@ type GeneratedLinkData struct {
 }
 
 const CustomNameExists = "That alias is taken. Please choose another one."
+const InvalidKeyAPI = "A valid API key is required to use this service."

@@ -1,3 +1,12 @@
+# # API client for https://urlbae.com/developers
+
+to install module:
+
+    go get -u github.com/Arkosh744/urlbae_client_API
+
+## Example
+_________________________________________________
+```go
 package main
 
 import (
@@ -40,3 +49,6 @@ func main() {
 	urlbae.GetAllLinks(client)
 
 }
+```
+_________________________________________________
+

@@ -36,18 +36,17 @@ func DoShortLink(client *client, LongLinkData *LongLinkData) string {
 	fmt.Println("Shortening the url: " + LongLinkData.LongURL + " with the alias: " + LongLinkData.CustomName + " and expiration date: " + LongLinkData.ExpirationDate.Format("2006-01-02 15:04:05"))
 	ShortedLink := shortLink(client, LongLinkData)
 
-	if ShortedLink.Message == CustomNameExists || ShortedLink.Error == 1 {
+	if ShortedLink.Message == CustomNameExists {
 		fmt.Println("Sorry, that alias is taken. We generated random one.")
 		LongLinkData.CustomName = ""
 		fmt.Println("Shortening the url: " + LongLinkData.LongURL + " without alias and expiration date: " + LongLinkData.ExpirationDate.Format("2006-01-02 15:04:05"))
 		ShortedLink = shortLink(client, LongLinkData)
-
 	}
 	fmt.Println("Your new shorted link is: " + ShortedLink.ShortUrl)
 	return ShortedLink.ShortUrl
 }
 
-func GetAccountInfo(client *client) {
+func GetAccountInfo(client *client) LinkResponse {
 	url := "https://urlbae.com/api/account"
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -69,11 +68,14 @@ func GetAccountInfo(client *client) {
 	body, err := ioutil.ReadAll(res.Body)
 	ErrorFatalEnding(err)
 
-	bodyString := string(body)
-	log.Println(bodyString)
+	AccountDataResponse := LinkResponse{}
+	err = json.Unmarshal(body, &AccountDataResponse)
+	ErrorFatalEnding(err)
+
+	return AccountDataResponse
 }
 
-func shortLink(client *client, LongLinkData *LongLinkData) ShortLinkResponse {
+func shortLink(client *client, LongLinkData *LongLinkData) LinkResponse {
 	url := "https://urlbae.com/api/url/add"
 
 	// if expirationDate is not set, it will be set to 1 day from now
@@ -106,7 +108,7 @@ func shortLink(client *client, LongLinkData *LongLinkData) ShortLinkResponse {
 	body, err := ioutil.ReadAll(res.Body)
 	ErrorFatalEnding(err)
 
-	ShortLinkResponseData := ShortLinkResponse{}
+	ShortLinkResponseData := LinkResponse{}
 
 	err = json.Unmarshal(body, &ShortLinkResponseData)
 	ErrorFatalEnding(err)
